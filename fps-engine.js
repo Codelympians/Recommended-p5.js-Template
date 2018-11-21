@@ -1,5 +1,4 @@
 let fpsEngine = {
-    frameTimes: [], // Time recordings corresponding to each frame
     oldTime: 0, // Time at which the previous frame is updated
     fpsCooldown: 0, // When fpsCooldown <= 0, set displayFPS = fps
     displayFPS: 0, // fps displayed on screen, updated every second
@@ -9,19 +8,10 @@ let fpsEngine = {
     // Usage: insert them at the end of the draw() function
     updateFPS: function() {
         let currentTime = millis()
-        this.frameTimes.push(currentTime)
-        while (this.frameTimes.length > 0 && this.frameTimes[0] < currentTime - 1000) {
-            this.frameTimes.splice(0, 1)
-        }
-
-        // Calculate fpsDelta
         let fpsDelta = currentTime - this.oldTime
 
         // Update realFPS
-        this.realFPS = this.frameTimes.length
-        if (millis() < 1000) {
-            this.realFPS = Math.round(1000 / fpsDelta)
-        }
+        this.realFPS = frameRate() // function provided by p5.js API
         
         // Update displayFPS
         this.fpsCooldown -= fpsDelta
